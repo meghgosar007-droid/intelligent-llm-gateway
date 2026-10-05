@@ -1,22 +1,21 @@
-import os
-from litellm import completion
+import requests
 
 MODEL_MAP = {
-    "cheap": "gemini/gemini-3.8-flash",
-    "strong": "gemini-3.8-flash",
+    "cheap": "llama3.2:3b",
+    "strong": "llama3.2:3b",
 }
 
 def ask_llm(prompt,model_type="strong"):
     model = MODEL_MAP[model_type]
-    response = completion(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt   
-            }
-        ],
-        api_key=os.getenv("GEMINI_API_KEY")
+    response = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": model,
+            "prompt": prompt,
+            "stream": False
+        }
     )
 
-    return response.choices[0].message.content
+    response.raise_for_status()
+
+    return response.json()["response"]
