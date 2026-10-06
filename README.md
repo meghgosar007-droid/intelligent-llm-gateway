@@ -6,55 +6,7 @@ latency for repeated or similar queries.
 
 ## Architecture
 
-                         ┌─────────────────┐
-                         │      User       │
-                         └────────┬────────┘
-                                  │
-                                  ▼
-                         ┌─────────────────┐
-                         │  FastAPI API    │
-                         │    Gateway      │
-                         └────────┬────────┘
-                                  │
-                                  ▼
-                    ┌─────────────────────────┐
-                    │    Semantic Cache       │
-                    │  Embedding + Similarity │
-                    └────────────┬────────────┘
-                                 │
-                    ┌────────────┴────────────┐
-                    │                         │
-                 CACHE HIT                CACHE MISS
-                    │                         │
-                    ▼                         ▼
-             ┌─────────────┐        ┌─────────────────┐
-             │    Valkey   │        │ Intelligent     │
-             │ Cached Answer│       │     Router      │
-             └──────┬──────┘        └────────┬────────┘
-                    │                        │
-                    │                 ┌──────┴──────┐
-                    │                 │             │
-                    │                 ▼             ▼
-                    │          ┌────────────┐ ┌────────────┐
-                    │          │ Llama 3.2  │ │    Qwen    │
-                    │          └──────┬─────┘ └─────┬──────┘
-                    │                 │             │
-                    │                 └──────┬──────┘
-                    │                        ▼
-                    │                 ┌─────────────┐
-                    │                 │    Ollama   │
-                    │                 └──────┬──────┘
-                    │                        │
-                    │                        ▼
-                    │                 ┌─────────────┐
-                    │                 │   Response  │
-                    │                 └──────┬──────┘
-                    │                        │
-                    │                        ▼
-                    │                 ┌─────────────┐
-                    └────────────────►│    Valkey   │
-                                      │ Store Cache │
-                                      └─────────────┘
+![Intelligent LLM Gateway Architecture](architecture.png)
 
 ## Tech Stack
 
