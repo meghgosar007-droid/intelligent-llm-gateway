@@ -6,7 +6,6 @@ latency for repeated or similar queries.
 
 ## Architecture
 
-```text
                          ┌─────────────────┐
                          │      User       │
                          └────────┬────────┘
@@ -56,6 +55,7 @@ latency for repeated or similar queries.
                     └────────────────►│    Valkey   │
                                       │ Store Cache │
                                       └─────────────┘
+
 ## Tech Stack
 
 - Python
