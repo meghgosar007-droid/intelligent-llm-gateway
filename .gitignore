@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 .env
+logs/
+cache.json
+metrics.json
+requests.jsonl

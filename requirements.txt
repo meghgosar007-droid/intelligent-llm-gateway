@@ -1,2 +1,5 @@
-litellm==1.104.0
-python-dotenv==1.2.4
+fastapi
+uvicorn
+requests
+numpy
+redis
