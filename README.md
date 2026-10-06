@@ -5,7 +5,6 @@ models based on query difficulty, while using semantic caching to reduce
 latency for repeated or similar queries.
 
 ## Architecture
-## Architecture
 
 ```text
                          ┌─────────────────┐
