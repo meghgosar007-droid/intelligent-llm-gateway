@@ -5,41 +5,58 @@ models based on query difficulty, while using semantic caching to reduce
 latency for repeated or similar queries.
 
 ## Architecture
+## Architecture
 
-User
-  ↓
-FastAPI Gateway
-  ↓
-Semantic Cache
-  ↓
-Valkey
-  ├── Cache HIT → Return cached response
-  │
-  └── Cache MISS
-          ↓
-     Intelligent Router
-       ↓          ↓
-   Llama 3.2     Qwen
-       ↓          ↓
-          Ollama
-             ↓
-          Response
-             ↓
-       Store in Valkey
-
-## Features
-
-- Intelligent model routing based on query difficulty
-- Local LLM inference using Ollama
-- Llama 3.2 and Qwen models
-- Semantic similarity caching
-- Valkey-backed cache storage
-- FastAPI API gateway
-- Request latency tracking
-- Cache hit/miss metrics
-- Model selection metrics
-- Benchmarking
-
+```text
+                         ┌─────────────────┐
+                         │      User       │
+                         └────────┬────────┘
+                                  │
+                                  ▼
+                         ┌─────────────────┐
+                         │  FastAPI API    │
+                         │    Gateway      │
+                         └────────┬────────┘
+                                  │
+                                  ▼
+                    ┌─────────────────────────┐
+                    │    Semantic Cache       │
+                    │  Embedding + Similarity │
+                    └────────────┬────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+                 CACHE HIT                CACHE MISS
+                    │                         │
+                    ▼                         ▼
+             ┌─────────────┐        ┌─────────────────┐
+             │    Valkey   │        │ Intelligent     │
+             │ Cached Answer│       │     Router      │
+             └──────┬──────┘        └────────┬────────┘
+                    │                        │
+                    │                 ┌──────┴──────┐
+                    │                 │             │
+                    │                 ▼             ▼
+                    │          ┌────────────┐ ┌────────────┐
+                    │          │ Llama 3.2  │ │    Qwen    │
+                    │          └──────┬─────┘ └─────┬──────┘
+                    │                 │             │
+                    │                 └──────┬──────┘
+                    │                        ▼
+                    │                 ┌─────────────┐
+                    │                 │    Ollama   │
+                    │                 └──────┬──────┘
+                    │                        │
+                    │                        ▼
+                    │                 ┌─────────────┐
+                    │                 │   Response  │
+                    │                 └──────┬──────┘
+                    │                        │
+                    │                        ▼
+                    │                 ┌─────────────┐
+                    └────────────────►│    Valkey   │
+                                      │ Store Cache │
+                                      └─────────────┘
 ## Tech Stack
 
 - Python
